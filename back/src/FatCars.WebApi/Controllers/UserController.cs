@@ -6,6 +6,7 @@ using FatCars.WebApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace FatCars.WebApi.Controllers
 {
@@ -13,9 +14,11 @@ namespace FatCars.WebApi.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
+        private readonly ILogger<UserController> _log;
         public readonly DataContext _context;
-        public UserController(DataContext context)
+        public UserController(DataContext context, ILogger<UserController> log)
         {
+            _log = log;
             _context = context;
         }
 
@@ -25,11 +28,13 @@ namespace FatCars.WebApi.Controllers
 
             try
             {
+                _log.LogInformation($"Initializing {nameof(GetAll)}");
                 var result = await _context.Users.ToListAsync();
                 return Ok(result);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
+                _log.LogError(ex, "");
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Falha no Banco");
             }
             
