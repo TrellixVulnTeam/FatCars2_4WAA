@@ -1,24 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
-using FatCars.WebApi.Models;
 using FatCars.WebApi.Data;
 
 namespace FatCars.WebApi
 {
     public class Startup
     {
+        private readonly string _allowEverything = "AllowEverything";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -38,7 +31,7 @@ namespace FatCars.WebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FatCars.WebApi", Version = "v1" });
             });
-            services.AddCors(opt => opt.AddPolicy("AllowEverthing",builder => builder
+            services.AddCors(opt => opt.AddPolicy(_allowEverything,builder => builder
 							.AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowAnyOrigin()));
@@ -54,7 +47,7 @@ namespace FatCars.WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FatCars.WebApi v1"));
             }
 			
-			app.UseCors("AllowEverthing");
+			app.UseCors(_allowEverything);
 
             app.UseHttpsRedirection();
 
