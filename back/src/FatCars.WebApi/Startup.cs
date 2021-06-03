@@ -7,6 +7,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using FatCars.WebApi.Data;
+using FatCars.WebApi.Data.Dapper;
+using FatCars.WebApi.Data.Dapper.Repositories;
+using FatCars.WebApi.Data.Dapper.Repositories.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -84,6 +87,9 @@ namespace FatCars.WebApi
 				};
 			});
 			services.AddSingleton<IConfiguration>(Configuration);
+			services.AddSingleton<IDatabaseConfig>(new DatabaseConfig(Configuration));
+
+			services.AddTransient<IUserRepository, UserRepository>();
 
 		}
 
