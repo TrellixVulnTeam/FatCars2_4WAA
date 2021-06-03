@@ -1,7 +1,7 @@
-﻿using FatCars.WebApi.Data.Dapper.Interfaces;
+﻿using FatCars.Repository.Dapper.Interfaces;
 using Microsoft.Extensions.Configuration;
 
-namespace FatCars.WebApi.Data.Dapper
+namespace FatCars.Repository.Dapper
 {
 	public class DatabaseConfig : IDatabaseConfig
 	{
@@ -9,7 +9,7 @@ namespace FatCars.WebApi.Data.Dapper
 
 		public DatabaseConfig(IConfiguration config)
 		{
-			this.ConnectionString = config["Dapper:ConnectionString"];
+			this.ConnectionString = config["Database:ConnectionString"];
 		}
 	}
 }

@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FatCars.WebApi", "FatCars.WebApi\FatCars.WebApi.csproj", "{8D204337-570D-4B8B-A702-B969441634A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FatCars.Repository", "FatCars.Repository\FatCars.Repository.csproj", "{B43BBD0E-6587-4998-8F40-86D7B8ED68EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FatCars.Domain", "FatCars.Domain\FatCars.Domain.csproj", "{ED345568-1F6F-4BDA-8A86-E77B399A0BD1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{8D204337-570D-4B8B-A702-B969441634A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D204337-570D-4B8B-A702-B969441634A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D204337-570D-4B8B-A702-B969441634A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B43BBD0E-6587-4998-8F40-86D7B8ED68EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B43BBD0E-6587-4998-8F40-86D7B8ED68EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B43BBD0E-6587-4998-8F40-86D7B8ED68EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B43BBD0E-6587-4998-8F40-86D7B8ED68EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED345568-1F6F-4BDA-8A86-E77B399A0BD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED345568-1F6F-4BDA-8A86-E77B399A0BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED345568-1F6F-4BDA-8A86-E77B399A0BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED345568-1F6F-4BDA-8A86-E77B399A0BD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

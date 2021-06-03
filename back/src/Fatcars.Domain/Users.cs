@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
-namespace FatCars.WebApi.Models
+namespace FatCars.Domain
 {
     public class Users
     {
@@ -12,5 +13,6 @@ namespace FatCars.WebApi.Models
         public string Login { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
+        public DateTime Registration { get; set; }
     }
 }

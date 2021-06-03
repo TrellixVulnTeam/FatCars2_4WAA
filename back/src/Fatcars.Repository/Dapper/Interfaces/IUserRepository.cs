@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using FatCars.WebApi.Models;
+using FatCars.Domain;
 
-namespace FatCars.WebApi.Data.Dapper.Interfaces
+namespace FatCars.Repository.Dapper.Interfaces
 {
 	public interface IUserRepository
 	{

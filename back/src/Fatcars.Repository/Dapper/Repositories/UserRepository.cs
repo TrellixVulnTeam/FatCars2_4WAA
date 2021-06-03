@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Dapper;
-using FatCars.WebApi.Data.Dapper.Interfaces;
-using FatCars.WebApi.Models;
+using FatCars.Repository.Dapper;
+using FatCars.Repository.Dapper.Interfaces;
+using FatCars.Domain;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
+using Dapper;
 
-namespace FatCars.WebApi.Data.Dapper.Repositories
+namespace FatCars.Repository.Dapper.Repositories
 {
 	public class UserRepository : IUserRepository
 	{

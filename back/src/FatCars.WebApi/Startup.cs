@@ -6,10 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
-using FatCars.WebApi.Data;
-using FatCars.WebApi.Data.Dapper;
-using FatCars.WebApi.Data.Dapper.Interfaces;
-using FatCars.WebApi.Data.Dapper.Repositories;
+using FatCars.Repository;
+using FatCars.Repository.Dapper;
+using FatCars.Repository.Dapper.Interfaces;
+using FatCars.Repository.Dapper.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -29,7 +29,7 @@ namespace FatCars.WebApi
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddDbContext<DataContext>(
-				x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
+				x => x.UseSqlite(Configuration["Database:ConnectionString"])
 			);
 
 			services.AddControllers();
