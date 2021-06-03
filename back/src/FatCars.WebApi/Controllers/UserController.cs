@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FatCars.WebApi.Data;
-using FatCars.WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +22,7 @@ namespace FatCars.WebApi.Controllers
 
         //Get All Users
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll(){
 
             try
@@ -45,6 +44,8 @@ namespace FatCars.WebApi.Controllers
         public async Task<IActionResult> GetById(int id){
             try
             {
+	            _log.LogInformation($"Initializing {nameof(GetById)}");
+
                 var result = await _context.Users.FirstOrDefaultAsync(x => x.UserID == id);
                 return Ok(result);
             }
