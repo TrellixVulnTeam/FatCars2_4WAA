@@ -26,7 +26,7 @@ namespace FatCars.WebApi.Migrations
                     b.Property<string>("Login")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("ConnectionString")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")

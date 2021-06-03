@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using FatCars.WebApi.Data;
+using FatCars.WebApi.Data.Dapper.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,11 @@ namespace FatCars.WebApi.Controllers
     {
         private readonly ILogger<UserController> _log;
         public readonly DataContext _context;
-        public UserController(DataContext context, ILogger<UserController> log)
+        private readonly IUserRepository _dapperRepository;
+
+        public UserController(DataContext context, ILogger<UserController> log, IUserRepository dapperRepository)
         {
+	        _dapperRepository = dapperRepository;
             _log = log;
             _context = context;
         }
@@ -46,12 +50,17 @@ namespace FatCars.WebApi.Controllers
             {
 	            _log.LogInformation($"Initializing {nameof(GetById)}");
 
-                var result = await _context.Users.FirstOrDefaultAsync(x => x.UserID == id);
+                //FROM ENTITY
+                //var result = await _context.Users.FirstOrDefaultAsync(x => x.UserID == id);
+                
+                //FROM DAPPER
+                var result = await _dapperRepository.GetById(id);
+                
                 return Ok(result);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Falha no Banco");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Falha no Banco - {ex.Message}");
             } 
         }
 
