@@ -1,4 +1,4 @@
-﻿namespace FatCars.WebApi.Data.Dapper.Repositories.Interfaces
+﻿namespace FatCars.WebApi.Data.Dapper.Interfaces
 {
 	public interface IDatabaseConfig
 	{

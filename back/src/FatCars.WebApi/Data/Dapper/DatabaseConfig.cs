@@ -1,4 +1,4 @@
-﻿using FatCars.WebApi.Data.Dapper.Repositories.Interfaces;
+﻿using FatCars.WebApi.Data.Dapper.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace FatCars.WebApi.Data.Dapper

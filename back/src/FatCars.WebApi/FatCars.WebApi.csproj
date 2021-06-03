@@ -18,4 +18,7 @@
     <PackageReference Include="log4net" Version="*" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="*" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\Dapper\Repositories\Interfaces\" />
+  </ItemGroup>
 </Project>

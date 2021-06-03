@@ -8,8 +8,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using FatCars.WebApi.Data;
 using FatCars.WebApi.Data.Dapper;
+using FatCars.WebApi.Data.Dapper.Interfaces;
 using FatCars.WebApi.Data.Dapper.Repositories;
-using FatCars.WebApi.Data.Dapper.Repositories.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 

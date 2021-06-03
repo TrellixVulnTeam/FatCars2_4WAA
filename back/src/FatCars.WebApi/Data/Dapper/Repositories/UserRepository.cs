@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dapper;
-using FatCars.WebApi.Data.Dapper.Repositories.Interfaces;
+using FatCars.WebApi.Data.Dapper.Interfaces;
 using FatCars.WebApi.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;

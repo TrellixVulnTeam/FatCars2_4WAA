@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using FatCars.WebApi.Data;
-using FatCars.WebApi.Data.Dapper.Repositories.Interfaces;
+using FatCars.WebApi.Data.Dapper.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
