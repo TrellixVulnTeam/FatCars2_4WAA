@@ -1,4 +1,8 @@
 using System.Text;
+using FatCars.Repository;
+using FatCars.Repository.Dapper;
+using FatCars.Repository.Dapper.Interfaces;
+using FatCars.Repository.Dapper.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,10 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
-using FatCars.Repository;
-using FatCars.Repository.Dapper;
-using FatCars.Repository.Dapper.Interfaces;
-using FatCars.Repository.Dapper.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -28,8 +28,8 @@ namespace FatCars.WebApi
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<DataContext>(
-				x => x.UseSqlite(Configuration["Database:ConnectionString"])
+			//services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration["Database:ConnectionString"])
+			services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration["Database:ConnectionString"])
 			);
 
 			services.AddControllers();
@@ -100,8 +100,21 @@ namespace FatCars.WebApi
 			{
 				app.UseDeveloperExceptionPage();
 				app.UseSwagger();
-				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FatCars.WebApi v1"));
+				app.UseSwaggerUI(
+					c =>
+					{
+						c.SwaggerEndpoint("/swagger/v1/swagger.json", "FatCars.WebApi v1");
+						c.DisplayRequestDuration();
+					});
 			}
+
+			//CREATE DATABASE
+			using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+			{
+				var context = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
+				context.Database.Migrate();
+			}
+
 
 			app.UseCors(_allowEverything);
 
