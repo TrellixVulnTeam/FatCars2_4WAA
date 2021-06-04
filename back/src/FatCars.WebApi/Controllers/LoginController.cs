@@ -4,8 +4,8 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using FatCars.WebApi.Data;
-using FatCars.WebApi.Models;
+using FatCars.Repository;
+using FatCars.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -34,7 +34,7 @@ namespace FatCars.WebApi.Controllers
 			[FromHeader] string Password)
 		{
 #if DEBUG
-			var _user = new Users { Login = "TESTE", Name = "NAME", Password = "PASSWORD", Role = "ROLE", UserID = 3 };
+			var _user = new Users { Login = "TESTE", Name = "NAME", Password = "PASSWORD", Role = "ROLE", UserId = 3 };
 			var _token = GenerateToken(_user);
 			return Ok(new
 			{

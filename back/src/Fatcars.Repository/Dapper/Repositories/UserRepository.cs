@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using FatCars.Repository.Dapper.Interfaces;
+using FatCars.Domain;
 using Dapper;
-using FatCars.WebApi.Data.Dapper.Interfaces;
-using FatCars.WebApi.Models;
-using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Data.SqlClient;
 
-namespace FatCars.WebApi.Data.Dapper.Repositories
+namespace FatCars.Repository.Dapper.Repositories
 {
 	public class UserRepository : IUserRepository
 	{
@@ -19,9 +18,9 @@ namespace FatCars.WebApi.Data.Dapper.Repositories
 
 		public async Task<Users> GetById(int UserId)
 		{
-			await using var connection = new SqliteConnection(_connectionString);
+			await using var connection = new SqlConnection(_connectionString);
 			await connection.OpenAsync();
-			var user = await connection.QueryFirstOrDefaultAsync<Users>($"SELECT * from {nameof(Users)} WHERE {nameof(Users.UserID)} = {UserId};");
+			var user = await connection.QueryFirstOrDefaultAsync<Users>($"SELECT * from {nameof(Users)};");// WHERE {nameof(Users.UserId)} = {UserId};");
 			return user ?? throw new Exception("User Not Found!");
 		}
 	}
