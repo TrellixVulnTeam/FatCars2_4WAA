@@ -12,8 +12,15 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Newtonsoft;
+using System;
+using Microsoft.AspNetCore.Identity;
+using FatCars.Domain;
+using StackExchange.Redis;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
-namespace FatCars.WebApi
+namespace FatCars.Application
 {
 	public class Startup
 	{
@@ -32,7 +39,43 @@ namespace FatCars.WebApi
 			services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration["Database:ConnectionString"])
 			);
 
-			services.AddControllers();
+			//Configuração das obrigatoriedades nas criações das senhas
+			IdentityBuilder builder = services.AddIdentityCore<Users>(
+				options => {
+					options.Password.RequireDigit = false;
+					options.Password.RequireLowercase = false;
+					options.Password.RequireNonAlphanumeric = false;
+					options.Password.RequireUppercase = false;
+					options.Password.RequiredLength = 8;
+				});
+
+			builder = new IdentityBuilder(builder.UserType, typeof(Role),
+				builder.Services);
+
+			builder.AddUserStore<DataContext>();
+			builder.AddRoleValidator<RoleValidator<Role>>();
+			builder.AddRoleManager<RoleManager<Role>>();
+			builder.AddSignInManager<SignInManager<Users>>();
+
+			//Configuração para requerir que o usuario esteja autenticado
+			services.AddControllers(options => {
+				var policy = new AuthorizationPolicyBuilder()
+					.RequireAuthenticatedUser()
+					.Build();
+					options.Filters.Add(new AuthorizeFilter(policy));
+					})
+					.AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling=
+						Newtonsoft.Json.ReferenceLoopHandling.Ignore
+					);
+			//AddNewtonsoftJson, tira as redundâncias dos json's
+
+			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+			services.AddSingleton<IConfiguration>(Configuration);
+			services.AddSingleton<IDatabaseConfig>(new DatabaseConfig(Configuration));
+
+			services.AddTransient<IUserRepository, UserRepository>();
+
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "FatCars.WebApi", Version = "v1" });
@@ -86,10 +129,7 @@ namespace FatCars.WebApi
 
 				};
 			});
-			services.AddSingleton<IConfiguration>(Configuration);
-			services.AddSingleton<IDatabaseConfig>(new DatabaseConfig(Configuration));
-
-			services.AddTransient<IUserRepository, UserRepository>();
+			
 
 		}
 

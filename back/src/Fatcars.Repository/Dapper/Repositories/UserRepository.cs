@@ -23,5 +23,21 @@ namespace FatCars.Repository.Dapper.Repositories
 			var user = await connection.QueryFirstOrDefaultAsync<Users>($"SELECT * from {nameof(Users)};");// WHERE {nameof(Users.UserId)} = {UserId};");
 			return user ?? throw new Exception("User Not Found!");
 		}
+
+		public bool CheckUser(int UserId)
+		{
+			bool exist = false;
+
+			using var connection = new SqlConnection(_connectionString);
+			connection.OpenAsync();
+			var user =  connection.QueryFirstOrDefault<int>($"SELECT Count(*) from {nameof(Users)} WHERE {nameof(Users.Id)} = {UserId};");
+
+
+			if (user > 0) { exist = true; } else { exist = false; }
+
+			return exist;
+		}
+
+
 	}
 }

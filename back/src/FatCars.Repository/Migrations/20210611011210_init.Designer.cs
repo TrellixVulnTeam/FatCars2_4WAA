@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace FatCars.Repository.Migrations
+namespace Fatcars.Repository.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210604004622_Initial")]
-    partial class Initial
+    [Migration("20210611011210_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,12 +21,41 @@ namespace FatCars.Repository.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("FatCars.Domain.Users", b =>
+            modelBuilder.Entity("FatCars.Domain.Email", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("EmailUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Registration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("Emails");
+                });
+
+            modelBuilder.Entity("FatCars.Domain.Users", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Login")
                         .HasColumnType("nvarchar(max)");
@@ -43,9 +72,21 @@ namespace FatCars.Repository.Migrations
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FatCars.Domain.Email", b =>
+                {
+                    b.HasOne("FatCars.Domain.Users", null)
+                        .WithMany("Emails")
+                        .HasForeignKey("UsersId");
+                });
+
+            modelBuilder.Entity("FatCars.Domain.Users", b =>
+                {
+                    b.Navigation("Emails");
                 });
 #pragma warning restore 612, 618
         }

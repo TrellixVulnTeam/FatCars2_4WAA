@@ -6,5 +6,6 @@ namespace FatCars.Repository.Dapper.Interfaces
 	public interface IUserRepository
 	{
 		Task<Users> GetById(int UserId);
+		bool CheckUser(int UserId);
 	}
 }

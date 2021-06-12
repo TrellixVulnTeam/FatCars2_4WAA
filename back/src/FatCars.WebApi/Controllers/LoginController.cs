@@ -10,71 +10,96 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using FatCars.Application.Dtos;
 
-namespace FatCars.WebApi.Controllers
+namespace FatCars.Application.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	public class LoginController : ControllerBase
-	{
-		private readonly ILogger<LoginController> _log;
-		private readonly DataContext _context;
-		private readonly IConfiguration _config;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LoginController : ControllerBase
+    {
+        private readonly ILogger<LoginController> _log;
+        private readonly IMapper _mapper;
+        private readonly IConfiguration _config;
+        private readonly DataContext _context;
+        private readonly SignInManager<Users> _signInManager;
+        private readonly UserManager<Users> _userManager;
 
-		public LoginController(DataContext context, ILogger<LoginController> log, IConfiguration config)
-		{
-			this._config = config;
-			this._context = context;
-			this._log = log;
-		}
 
-		[HttpPost]
-		public async Task<IActionResult> Login(
-			[FromHeader] string Username,
-			[FromHeader] string Password)
-		{
-#if DEBUG
-			var _user = new Users { Login = "TESTE", Name = "NAME", Password = "PASSWORD", Role = "ROLE", UserId = 3 };
-			var _token = GenerateToken(_user);
-			return Ok(new
-			{
-				User = _user.Login,
-				Token = _token
-			});
-#endif
-			var user = await _context.Users.FirstOrDefaultAsync(u => u.Login == Username && u.Password == Password);
+        public LoginController(
+            DataContext context,
+            SignInManager<Users> signInManager,
+            UserManager<Users> userManager,
+            ILogger<LoginController> log,
+            IConfiguration config,
+            IMapper mapper)
+        {
+            this._config = config;
+            this._context = context;
+            this._log = log;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._mapper = mapper;
+        }
 
-			if (user is null)
-				return Unauthorized();
 
-			var token = GenerateToken(user);
-			return Ok(new
-			{
-				User = user.Login,
-				token = token
-			});
-		}
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginDto login)
+        {
 
-		private string GenerateToken(Users user)
-		{
-			var claims = new[]
-			{
-				new Claim(ClaimTypes.Name, user.Name),
-				new Claim(ClaimTypes.Role, user.Role)
-			};
-			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
 
-			var token =
-				new JwtSecurityToken(
-					issuer: _config["Jwt:Issuer"],
-					audience: _config["Jwt:Audience"],
-					expires: DateTime.Now.AddMinutes(120),
-					signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
+            //#if DEBUG
+            //			var _user = new Users { Login = "TESTE", Name = "NAME", Password = "PASSWORD", Role = "ROLE", Id = 3 };
+            //			var _token = GenerateToken(_user);
+            //			return Ok(new
+            //			{
+            //				User = _user.Login,
+            //				Token = _token
+            //			});
+            //#endif
+            try
+            {
 
-			var tokenHandler = new JwtSecurityTokenHandler();
-			var stringToken = tokenHandler.WriteToken(token);
-			return stringToken;
-		}
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Login == login.Login && u.Password == login.Password);
 
-	}
+                if (user is null)
+                    return Unauthorized();
+
+                var token = GenerateToken(user);
+                return Ok(new
+                {
+                    User = user.Login,
+                    token = token
+                });
+            }
+            catch (Exception ex){ 
+                _log.LogError("Erro Login: ", ex);
+                return BadRequest();
+            }
+        }
+
+        private string GenerateToken(Users user)
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+
+            var token =
+                new JwtSecurityToken(
+                    issuer: _config["Jwt:Issuer"],
+                    audience: _config["Jwt:Audience"],
+                    expires: DateTime.Now.AddMinutes(120),
+                    signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var stringToken = tokenHandler.WriteToken(token);
+            return stringToken;
+        }
+
+    }
 }
