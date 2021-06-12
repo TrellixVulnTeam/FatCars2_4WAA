@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace FatCars.Application.Controllers
+namespace FatCars.Webapi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

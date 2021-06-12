@@ -14,7 +14,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using FatCars.Application.Dtos;
 
-namespace FatCars.Application.Controllers
+namespace FatCars.Webapi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
