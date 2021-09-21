@@ -57,8 +57,8 @@ namespace FatCars.WebApi
 				{
 					{securityScheme, new string[] { }}
 				});
-
 			});
+
 			services.AddCors(opt => opt.AddPolicy(_allowEverything, builder => builder
 							 .AllowAnyHeader()
 							 .AllowAnyMethod()
